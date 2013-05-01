@@ -23,8 +23,8 @@ class ClosestDateTest extends PHPUnit_Framework_TestCase
   /**
   * @dataProvider providerDates
   */
-  public function testGetClosestDate($data, $correct){
-
+  public function testGetClosestDate($data, $correct)
+  {
     $result = $this->closestDate->getClosestDate($data);
     $this->assertSame($result, $correct);
   }

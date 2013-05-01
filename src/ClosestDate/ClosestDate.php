@@ -2,8 +2,8 @@
 
 namespace ClosestDate;
 
-class ClosestDate {
-
+class ClosestDate
+{
   const PERIOD_PAST_DATES    = 1;
   const PERIOD_FUTURE_DATES  = 2;
   const PERIOD_ALL_DATES     = 4;
@@ -12,6 +12,7 @@ class ClosestDate {
   {
 
     $result = $this->getClosestDateAllDates($dates);
+
     return $result;
   }
 
@@ -29,23 +30,23 @@ class ClosestDate {
       $tiempo_inicio_condicion = strtotime($date);
       $diff = time() - $tiempo_inicio_condicion;
 
-      if(!$tengo_condiciones_anteriores_a_hoy && $diff > 0)
-      {
+      if (!$tengo_condiciones_anteriores_a_hoy && $diff > 0) {
         $tengo_condiciones_anteriores_a_hoy = TRUE;
       }
 
-      if($tengo_condiciones_anteriores_a_hoy && $diff < 0){
+      if ($tengo_condiciones_anteriores_a_hoy && $diff < 0) {
         break;
       }
 
       $abs_diff = abs($diff);
 
-      if($abs_diff < $min_diff){
+      if ($abs_diff < $min_diff) {
         $min_diff = $abs_diff;
         $nearest_date_key = $key;
       }
 
     }
+
     return $dates[$nearest_date_key];
   }
 
