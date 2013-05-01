@@ -1,0 +1,21 @@
+{
+  "name": "closestdate/closestdate",
+  "type": "library",
+  "description": "Utility class for find the closest date in PHP 5.3+",
+  "keywords": ["date","closest"],
+  "homepage": "http://github.com/lordoffreaks/ClosestDate",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alejandro Tabares",
+      "email": "alex311es@gmail.com",
+      "homepage": "http://about.me/alejandro.tabares",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "ClosestDate": "src/"
+    }
+  }
+}
