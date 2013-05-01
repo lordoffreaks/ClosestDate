@@ -17,51 +17,111 @@ class ClosestDateTest extends PHPUnit_Framework_TestCase
     date_default_timezone_set('Europe/Madrid');
 
     parent::setUp();
-    $this->closestDate = new \ClosestDate\ClosestDate;
+    $this->closestDate = new ClosestDate\ClosestDate;
   }
 
   /**
   * @dataProvider providerDates
   */
-  public function testGetClosestDate($data, $correct)
+  public function testGetClosestDateFromCurrentDate($data, $correct)
   {
     $result = $this->closestDate->getClosestDate($data);
+    $this->assertSame($result, $correct);
+  }
+
+  /**
+  * @dataProvider providerDates
+  */
+  public function testGetClosestDateFromGivenDate($data, $correct)
+  {
+    $mode = ClosestDate\ClosestDate::PERIOD_ALL_DATES;
+    $date = '2013-12-09';
+
+    $result = $this->closestDate->getClosestDate($data, $mode, $date);
+    $this->assertSame($result, $correct);
+  }
+
+  /**
+  * @dataProvider pastDatesProvider
+  */
+  public function testGetClosestFromCurrentDateOnlyPastDates($data, $correct)
+  {
+
+    $mode = ClosestDate\ClosestDate::PERIOD_PAST_DATES;
+
+    $result = $this->closestDate->getClosestDate($data, $mode);
+    $this->assertSame($result, $correct);
+  }
+
+  /**
+  * @dataProvider futureDatesProvider
+  */
+  public function testGetClosestFromCurrentDateOnlyFutureDates($data, $correct)
+  {
+
+    $mode = ClosestDate\ClosestDate::PERIOD_FUTURE_DATES;
+
+    $result = $this->closestDate->getClosestDate($data, $mode);
     $this->assertSame($result, $correct);
   }
 
   public function providerDates()
   {
 
-    // solo fechas pasadas el bueno es el 2
-    $case1 = array(
-      '2012-04-01',
-      '2012-05-01',
-      '2012-09-01',
-      '2011-09-01',
-      '2010-09-01',
-      '1970-09-01',
-    );
-
-    // solo fechas futuras el bueno es el 1
-    $case2 = array(
-      '2014-05-01',
-      '2014-04-01',
-      '2014-09-01',
-      '2018-09-01',
-    );
-
-    // fechas pasadas y futuras el bueno es el 1
-    $case3 = array(
-      '2012-04-01',
-      '2013-02-01',
-      '2014-09-01',
-    );
+    $case1 = $this->pastDates();
+    $case2 = $this->futureDates();
+    $case3 = $this->pastAndFutureDates();
 
     return array(
       array($case1, '2012-09-01'),
-      array($case2, '2014-04-01'),
+      array($case2, '2050-04-01'),
       array($case3, '2013-02-01'),
     );
+  }
+
+  public function pastDatesProvider()
+  {
+    return array(
+      array($this->pastDates(), '2012-09-01'),
+    );
+  }
+
+  public function futureDatesProvider()
+  {
+    return array(
+      array($this->futureDates(), '2050-04-01'),
+    );
+  }
+
+  protected function pastDates()
+  {
+    return array(
+      '2012-04-01',
+      '2012-05-01',
+      '2012-09-01',
+    );
+
+  }
+
+  protected function futureDates()
+  {
+    return array(
+      '2050-05-01',
+      '2050-04-01',
+      '2050-09-01',
+      '2050-09-01',
+    );
+
+  }
+
+  protected function pastAndFutureDates()
+  {
+    return array(
+      '1999-04-01',
+      '2013-02-01',
+      '2050-09-01',
+    );
+
   }
 
 }

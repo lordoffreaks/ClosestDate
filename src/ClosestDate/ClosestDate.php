@@ -8,10 +8,21 @@ class ClosestDate
   const PERIOD_FUTURE_DATES  = 2;
   const PERIOD_ALL_DATES     = 4;
 
-  public function getClosestDate($dates, $mode = self::PERIOD_ALL_DATES)
+  public function getClosestDate($dates, $mode = self::PERIOD_ALL_DATES, $date = NULL)
   {
+    switch ($mode) {
+      case self::PERIOD_PAST_DATES:
+      case self::PERIOD_FUTURE_DATES:
+        $method = 'getClosestDateOnlyPastOfFutureDates';
+        break;
 
-    $result = $this->getClosestDateAllDates($dates);
+      default:
+        $method = 'getClosestDateAllDates';
+        break;
+    }
+
+    $time = $date ? strtotime($date) : time();
+    $result = $this->{$method}($dates, $time);
 
     return $result;
   }
@@ -19,16 +30,42 @@ class ClosestDate
   /**
   *
   */
-  protected function getClosestDateAllDates($dates)
+  protected function getClosestDateOnlyPastOfFutureDates($dates, $time)
   {
 
-    $min_diff = time();
+    $min_diff = $time;
     $tengo_condiciones_anteriores_a_hoy = FALSE;
 
     foreach ($dates as $key => $date) {
 
       $tiempo_inicio_condicion = strtotime($date);
-      $diff = time() - $tiempo_inicio_condicion;
+      $diff = $time - $tiempo_inicio_condicion;
+
+      $abs_diff = abs($diff);
+
+      if ($abs_diff < $min_diff) {
+        $min_diff = $abs_diff;
+        $nearest_date_key = $key;
+      }
+
+    }
+
+    return $dates[$nearest_date_key];
+  }
+
+  /**
+  *
+  */
+  protected function getClosestDateAllDates($dates, $time)
+  {
+
+    $min_diff = $time;
+    $tengo_condiciones_anteriores_a_hoy = FALSE;
+
+    foreach ($dates as $key => $date) {
+
+      $tiempo_inicio_condicion = strtotime($date);
+      $diff = $time - $tiempo_inicio_condicion;
 
       if (!$tengo_condiciones_anteriores_a_hoy && $diff > 0) {
         $tengo_condiciones_anteriores_a_hoy = TRUE;
