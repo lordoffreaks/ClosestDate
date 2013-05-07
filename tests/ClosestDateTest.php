@@ -54,12 +54,40 @@ class ClosestDateTest extends PHPUnit_Framework_TestCase
   }
 
   /**
+  * @dataProvider pastDatesProvider
+  */
+  public function testGetClosestFromGivenDateOnlyPastDates($data, $correct)
+  {
+
+    $mode = ClosestDate\ClosestDate::PERIOD_PAST_DATES;
+
+    $date = '2040-12-09';
+
+    $result = $this->closestDate->getClosestDate($data, $mode, $date);
+    $this->assertSame($result, $correct);
+  }
+
+  /**
   * @dataProvider futureDatesProvider
   */
   public function testGetClosestFromCurrentDateOnlyFutureDates($data, $correct)
   {
 
     $mode = ClosestDate\ClosestDate::PERIOD_FUTURE_DATES;
+
+    $result = $this->closestDate->getClosestDate($data, $mode);
+    $this->assertSame($result, $correct);
+  }
+
+  /**
+  * @dataProvider futureDatesProvider
+  */
+  public function testGetClosestFromGivenDateOnlyFutureDates($data, $correct)
+  {
+
+    $mode = ClosestDate\ClosestDate::PERIOD_FUTURE_DATES;
+
+    $date = '1989-12-09';
 
     $result = $this->closestDate->getClosestDate($data, $mode);
     $this->assertSame($result, $correct);
