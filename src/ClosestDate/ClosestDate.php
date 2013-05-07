@@ -34,23 +34,21 @@ class ClosestDate
   {
 
     $min_diff = $time;
-    $tengo_condiciones_anteriores_a_hoy = FALSE;
 
     foreach ($dates as $key => $date) {
 
-      $tiempo_inicio_condicion = strtotime($date);
-      $diff = $time - $tiempo_inicio_condicion;
+      $diff = $time - strtotime($date);
 
       $abs_diff = abs($diff);
 
       if ($abs_diff < $min_diff) {
         $min_diff = $abs_diff;
-        $nearest_date_key = $key;
+        $closest_date_key = $key;
       }
 
     }
 
-    return $dates[$nearest_date_key];
+    return $dates[$closest_date_key];
   }
 
   /**
@@ -60,18 +58,17 @@ class ClosestDate
   {
 
     $min_diff = $time;
-    $tengo_condiciones_anteriores_a_hoy = FALSE;
+    $have_past_dates = FALSE;
 
     foreach ($dates as $key => $date) {
 
-      $tiempo_inicio_condicion = strtotime($date);
-      $diff = $time - $tiempo_inicio_condicion;
+      $diff = $time - strtotime($date);
 
-      if (!$tengo_condiciones_anteriores_a_hoy && $diff > 0) {
-        $tengo_condiciones_anteriores_a_hoy = TRUE;
+      if (!$have_past_dates && $diff > 0) {
+        $have_past_dates = TRUE;
       }
 
-      if ($tengo_condiciones_anteriores_a_hoy && $diff < 0) {
+      if ($have_past_dates && $diff < 0) {
         break;
       }
 
@@ -79,12 +76,12 @@ class ClosestDate
 
       if ($abs_diff < $min_diff) {
         $min_diff = $abs_diff;
-        $nearest_date_key = $key;
+        $closest_date_key = $key;
       }
 
     }
 
-    return $dates[$nearest_date_key];
+    return $dates[$closest_date_key];
   }
 
 }
