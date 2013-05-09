@@ -5,6 +5,9 @@
   "keywords": ["date","closest"],
   "homepage": "http://github.com/lordoffreaks/ClosestDate",
   "license": "MIT",
+  "require": {
+    "php": ">=5.3.0"
+  },
   "authors": [
     {
       "name": "Alejandro Tabares",
